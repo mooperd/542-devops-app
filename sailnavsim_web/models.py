@@ -30,7 +30,7 @@ class User(UserMixin, db.Model):
 class BoatType(db.Model):
     __tablename__   = 'BoatType'
     id              = db.Column(db.Integer, primary_key=True, unique=True)
-    name            = db.Column(db.Text, nullable=False, unique=True)
+    name            = db.Column(db.String(20), nullable=False, unique=True)
 
 class Boat(db.Model):
     __tablename__   = 'Boat'
