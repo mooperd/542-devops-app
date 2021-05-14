@@ -1,18 +1,18 @@
 #!/bin/bash
 
 export NAMESPACE=$(git rev-parse --abbrev-ref HEAD)
-export SERVICE_NAME=andrews-app
+export SERVICE_NAME=andrews_app
 export SHORT_SHA=$(git rev-parse --short HEAD)
 export BUILD_IMAGE=gcr.io/devops-542/$SERVICE_NAME:$SHORT_SHA
 export HOSTNAME=$NAMESPACE.tld.com
 
 # Application secrets
 export SECRET_KEY=test1234
-export MYSQL_SCHEMA=$NAMESPACE-$SERVICE_NAME
+export MYSQL_SCHEMA=$NAMESPACE_$SERVICE_NAME
 export MYSQL_HOST=mysql.database
 export MYSQL_USER=root
 export MYSQL_PWD=password
-export SQLALCHEMY_DATABASE_URI=mysql+pymysql://$MYSQL_USER:$MYSQL_PWD@$MYSQL_HOST/$NAMESPACE-$SERVICE_NAME
+export SQLALCHEMY_DATABASE_URI=mysql+pymysql://$MYSQL_USER:$MYSQL_PWD@$MYSQL_HOST/$MYSQL_SCHEMA
 
 # Authenticate with google services
 gcloud container clusters get-credentials cluster-1 --zone europe-west1-b --project devops-542
