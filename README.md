@@ -65,5 +65,5 @@ spec:
 
 The *Pods* are ephemeral with temporary ip addresses so we should never try and connect to them directly. We use a *Service* as a discovery mechanism and load balancer. The *Service* discoveres all the pods produced by a deployment and load balances them.
 
- 
+*Ingress* is mapping  
 # 

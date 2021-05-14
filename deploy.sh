@@ -4,7 +4,9 @@ export NAMESPACE=$(git rev-parse --abbrev-ref HEAD)
 export SERVICE_NAME=andrews-app
 export SHORT_SHA=$(git rev-parse --short HEAD)
 export BUILD_IMAGE=gcr.io/devops-542/$SERVICE_NAME:$SHORT_SHA
-export HOSTNAME=$NAMESPACE.tld.com
+export TLD=devops-wizard.com
+export HOSTNAME=$NAMESPACE.$TLD
+export CERT_NAME=wildcard-${TLD/./-}
 
 # Application secrets
 export SECRET_KEY=test1234
@@ -13,6 +15,7 @@ export MYSQL_HOST=mysql.database
 export MYSQL_USER=root
 export MYSQL_PWD=password
 export SQLALCHEMY_DATABASE_URI=mysql+pymysql://$MYSQL_USER:$MYSQL_PWD@$MYSQL_HOST/$MYSQL_SCHEMA
+
 
 # Authenticate with google services
 gcloud container clusters get-credentials cluster-1 --zone europe-west1-b --project devops-542
@@ -44,3 +47,8 @@ cat k8s/service.yaml | envsubst | kubectl apply -n $NAMESPACE -f -
 cat k8s/ingress.yaml | envsubst
 cat k8s/ingress.yaml | envsubst | kubectl apply -n $NAMESPACE -f -
 
+# Horrible hacky cludge to copy ssl certs from default namespace
+kubectl get secret $CERT_NAME -o json \
+| jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' \
+| kubectl apply -n $NAMESPACE -f -
+kubectl rollout status deployment/$SERVICE_NAME -n $NAMESPACE
