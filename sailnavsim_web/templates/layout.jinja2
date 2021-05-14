@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>{{ title }}</title>
+  <meta name="description" content="Add user authentication to your Flask app."/>
+  <meta name="HandheldFriendly" content="True"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#5eb9d7"/>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='dist/img/favicon.png') }}" type="image/x-icon"/>
+  <meta property="og:site_name" content="Hackers and Slackers"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Hackers and Slackers - Hackers and Slackers"/>
+  <meta property="og:description" content="Add user authentication to your Flask app."/>
+  <meta property="og:url" content="https://flasklogin.hackersandslackers.app/"/>
+  <meta name="twitter:title" content="{{ title }}"/>
+  <meta name="twitter:description" content="Add user authentication to your Flask app."/>
+  <meta name="twitter:url" content="https://flasklogin.hackersandslackers.app/"/>
+  <meta name="twitter:site" content="@hackersslackers"/>
+  <meta name="twitter:creator" content="@toddrbirchard"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:image"
+        content=" https://storage.googleapis.com/hackersandslackers-cdn/2019/06/flasklogin@2x.jpg"/>
+  <meta property="og:image" content=" https://storage.googleapis.com/hackersandslackers-cdn/2019/06/flasklogin@2x.jpg"/>
+  <meta property="og:image:width" content="1000"/>
+  <meta property="og:image:height" content="523"/>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,500" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  {% block pagestyles %}{% endblock %}
+</head>
+
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <img src="{{ url_for('static', filename='dist/img/sailnavsim-logo.png') }}" width="112" height="28">
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item">
+        Home
+      </a>
+
+      <a class="navbar-item">
+        Documentation
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            About
+          </a>
+          <a class="navbar-item">
+            Jobs
+          </a>
+          <a class="navbar-item">
+            Contact
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item">
+            Report an issue
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+            {% if current_user.is_authenticated %}
+            <p>Hi {{ current_user.name }}!</p>
+            <a href="{{ url_for('pages_bp.logout') }}" class="button is-danger">
+            <strong>Log Out</strong>
+            </a>
+          <a class="button is-light">
+            Log in
+          </a>
+          {% else %}
+            <p>You are not logged in</p>
+            <a href="{{ url_for('auth_bp.signup')}}" class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a href="{{ url_for('auth_bp.login')}}" class="button is-light">
+            Log in
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container">
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+
+      <article class="alert message {{ category }}">
+        <div class="alert message-header">
+          <p>Message</p>
+        </div>
+        <div class="alert message-body">
+          {{ message }}
+        </div>
+      </article>
+
+    {% endfor %}
+  
+  {% block content %}
+  {% endblock %}
+</div>
+</body>
+</html>

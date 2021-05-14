@@ -1,0 +1,38 @@
+{% extends "layout.jinja2" %}
+
+{% block pagestyles %}
+  <link href="{{ url_for('static', filename='dist/css/dashboard.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='dist/css/account.css') }}" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://use.typekit.net/sus7rlu.css">
+{% endblock %}
+
+{% block content %}
+  <h1>{{ body }}</h1>
+
+  {% if current_user.is_authenticated %}
+    <p>Hi {{ current_user.name }}!</p>
+    <h1>Users</h1>
+      <table>
+        {% for item in users %}
+        <TR>
+          <TD class="c2">{{item.name}}</TD>
+          <TD class="c3">{{item.email}}</TD>
+        </TR>
+        {% endfor %}
+      </table>
+    <h1>Races</h1>
+      <table>
+        {% for item in races %}
+        <TR>
+          <TD class="c2">{{item.name}}</TD>
+          <TD class="c3">{{item.boat_type}}</TD>start_time
+          <TD class="c3">{{item.start_time}}</TD>
+        </TR>
+        {% endfor %}
+      </table>
+
+
+    <a href="{{ url_for('pages_bp.logout') }}">Log out</a>
+  {% endif %}
+
+{% endblock %}

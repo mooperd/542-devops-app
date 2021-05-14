@@ -1,0 +1,141 @@
+<html>
+    <head>
+       <title>SailNavSim Race Maps</title>
+       <link rel="icon" href="./img/favicon-16.png" sizes="16x16">
+       <link rel="icon" href="./img/favicon-32.png" sizes="32x32">
+       <link rel="icon" href="./img/favicon-64.png" sizes="64x64">
+       <link rel="icon" href="./img/favicon-128.png" sizes="128x128">
+       <style>
+          .mapview { width:80vw; height:80vh; margin:0; padding:0; overflow:hidden; }
+       </style>
+    </head>
+
+{% block content %}
+
+  {% if current_user.is_authenticated %}
+  
+    <body>
+       <h1>{{ message }}</h1>
+
+       <p align=right><a href=".">Start</a> | <a href="races.php">Races</a> | <a href="./maps/">Maps</a> | <a href="help.html">Help</a> | <a href="./api/">API</a> | <a href="https://github.com/ls4096/sailnavsim-core">GitHub</a> | <a href="https://twitter.com/SailNavSim">Twitter</a> | <a href="contact.php">Contact</a></p>
+       <p align=left><img src="./img/white.png"><font style="font-size: 24px"><i>SailNavSim</i></font></p>
+       <hr width=100%>
+       <h3>Maps for {{ current_user.name }}</h3>
+       <br><a href="#race-map">Race Map</a><br><a href="#windy-map">Weather Forecast Map</a><br><br>
+       <hr width=100%>
+       <center>
+       <br>
+       <h4 id="race-map">Race Map</h4>
+
+       <table cellpadding=10 cellspacing=0 border=1>
+          <tr>
+             <td>
+                Show live boat: <input type="checkbox" id="liveBoatMode"><br><br>Data overlay: 
+                <select id="overlayTile">
+                   <option value="none" selected>None</option>
+                   <option value="wind">Wind</option>
+                   <option value="wind_gust">Wind Gust</option>
+                   <option value="ocean_current">Ocean Current</option>
+                   <option value="sea_ice">Sea Ice</option>
+                   <option value="wave_height">Wave Height</option>
+                </select>
+             </td>
+          </tr>
+       </table>
+       <br>Boat positions as of 2021-04-16 0611Z (37s ago)<br>
+
+       <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/boat.min.css') }}">
+       <script src="{{ url_for('static', filename='dist/js/boat.min.js') }}"></script>
+
+       
+       <div class="mapview" id="mapid"></div>
+       <script>
+            var raceMap = createMap([35.717121, 140.917724], 7)
+            configureMap(raceMap)
+            writeMarkersToMap(raceMap)
+
+            document.getElementById("overlayTile").onchange = function() {
+                overlayTileChange()
+            };
+            document.getElementById("overlayTile").value = "none";
+
+            document.getElementById("liveBoatMode").onclick = function() {
+                liveBoatModeClick()
+            };
+            document.getElementById("liveBoatMode").checked = false;
+
+
+    var liveBoatMarkerAdded = false;
+
+    function printAngleMag(a, m) {
+        return Math.round(a).toString().padStart(3, '0') + "&#176 / " + (m * 1.943844).toFixed(1) + " kts"
+    }
+
+    getTrack().then(track => {
+        L.polyline(track, {
+            color: '#404040',
+            weight: 2,
+            opacity: 0.6
+        }).addTo(raceMap);
+    })
+
+
+    var bm0 = L.marker([35.717121, 140.917724], {
+        icon: yellowIconE
+    }).addTo(raceMap);
+    var bmL0 = L.marker([35.717121, -219.082276], {
+        icon: yellowIconE
+    }).addTo(raceMap);
+    var bmR0 = L.marker([35.717121, 500.917724], {
+        icon: yellowIconE
+    }).addTo(raceMap);
+    bm0.bindPopup("<center><b>Captain Mooperd</b></center><hr width=80% color=#c0c0c0>35&#176;43\'01\"N 140&#176;55\'03\"E<br>SOG: 6.7 kts<br>Wind: 140&#176; / 14 kts (gust 14)");
+    bmL0.bindPopup("<center><b>Captain Mooperd</b></center><hr width=80% color=#c0c0c0>35&#176;43\'01\"N 140&#176;55\'03\"E<br>SOG: 6.7 kts<br>Wind: 140&#176; / 14 kts (gust 14)");
+    bmR0.bindPopup("<center><b>Captain Mooperd</b></center><hr width=80% color=#c0c0c0>35&#176;43\'01\"N 140&#176;55\'03\"E<br>SOG: 6.7 kts<br>Wind: 140&#176; / 14 kts (gust 14)");
+    bm0.al = null;
+    bmL0.al = null;
+    bmR0.al = null;
+    raceMap.on('popupopen', function(e) {
+        if (e.popup._source.al != null) {
+            e.popup._source.al.setStyle({
+                color: '#a07020',
+                weight: 2,
+                opacity: 0.6
+            });
+            e.popup._source.alL.setStyle({
+                color: '#a07020',
+                weight: 2,
+                opacity: 0.6
+            });
+            e.popup._source.alR.setStyle({
+                color: '#a07020',
+                weight: 2,
+                opacity: 0.6
+            });
+        }
+    });
+    raceMap.on('popupclose', function(e) {
+        if (e.popup._source.al != null) {
+            e.popup._source.al.setStyle({
+                color: '#808080',
+                weight: 1,
+                opacity: 0.4
+            });
+            e.popup._source.alL.setStyle({
+                color: '#808080',
+                weight: 1,
+                opacity: 0.4
+            });
+            e.popup._source.alR.setStyle({
+                color: '#808080',
+                weight: 1,
+                opacity: 0.4
+            });
+        }
+    });    
+    </script>
+    <br><br><br><h4 id="windy-map">Weather Forecast Map</h4>Your boat position at 2021-04-16 0611Z (37s ago)<br>35&#176;43'01"N 140&#176;55'03"E (35.717121,140.917724)<br><div class="mapview"><iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=35.717121&lon=140.917724&zoom=7&level=surface&overlay=wind&menu=&message=&marker=true&calendar=&pressure=&type=map&location=coordinates&detail=&detailLat=35.717121&detailLon=140.917724&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0"></iframe></div></center></body></html><div style="height:10vh"></div></body></html>
+
+  {% endif %}
+
+{% endblock %}

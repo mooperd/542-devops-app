@@ -1,0 +1,75 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<section class="section is-medium">
+  <article class="panel is-primary">
+  <p class="panel-heading">Signup</p>
+    <form class="box" method="POST" action="/signup">
+      {{ form.csrf_token }}
+
+      <div class="field">
+        <label class="label">Name</label>
+        {{ form.name(class_="input", placeholder='John Smith') }}
+        {% if form.name.errors %}
+          <span class="icon is-small is-right">
+            <i class="fas fa-exclamation-triangle"></i>
+          </span>
+        </div>
+        {% for error in form.email.errors %}
+        <p class="help is-danger">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label class="label">Email</label>
+        {{ form.email(class_="input", placeholder='youremail@example.com') }}
+        {% if form.email.errors %}
+          <span class="icon is-small is-right">
+            <i class="fas fa-exclamation-triangle"></i>
+          </span>
+        </div>
+        {% for error in form.email.errors %}
+        <p class="help is-danger">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label class="label">Password</label>
+        {{ form.password(class_="input", placeholder='password') }}
+        {% if form.password.errors %}
+          <span class="icon is-small is-right">
+            <i class="fas fa-exclamation-triangle"></i>
+          </span>
+        </div>
+        {% for error in form.password.errors %}
+        <p class="help is-danger">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label class="label">Password Confirm</label>
+        {{ form.confirm(class_="input", placeholder='password confirm') }}
+        {% if form.confirm.errors %}
+          <span class="icon is-small is-right">
+            <i class="fas fa-exclamation-triangle"></i>
+          </span>
+        </div>
+        {% for error in form.confirm.errors %}
+        <p class="help is-danger">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <p class="control">
+        {{ form.submit(class_="button is-success") }}
+        </p>
+      </div>
+    </form>
+  </article>
+</section>
+
+{% endblock %}

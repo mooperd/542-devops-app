@@ -1,0 +1,71 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div>
+  <h1 class="subtitle">Race Details</h1>
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <tr>
+          <th>Name</th>
+          <th>Boat Type</th>
+          <th>Start Time</th>
+          <th>Start Location</th>
+          <th>Finish Location</th>
+          <th>Private</th>
+          <th>ID</th>
+        </tr>
+        <tr>
+          <td>{{race.name}}</a></td>
+          <td>{{race.boat_type.name}}</td>
+          <td>{{race.start_time}}</td>
+          <td>{{race.start_location.name}}</td>
+          <td>{{race.finish_location.name}}</td>
+          <td>{{race.private}}</td>
+          <td>{{race.id}}</td>
+        </tr>
+      </table>
+    </div>
+
+  <h1 class="subtitle">Boats</h1>
+
+    <div class="table-container">
+      <form method="POST" action="{{ url_for('api_bp.boat', race_id=race.id )}}">
+      {{ form.csrf_token }}
+      <table class="table is-fullwidth">
+        <tr>
+          <th>Name</th>
+          <th>Owner</th>
+          <th>Desired Course</th>
+          <th>Started</th>
+          <th>ID</th>
+        </tr>
+        {% for boat in boats %}
+        <tr>
+          <td>{{boat.name}}</a></td>
+          <td>{{boat.user.name}}</td>
+          <td>{{boat.desiredCourse}}</td>
+          <td>{{boat.started}}</td>
+          <td>{{boat.id}}</td>
+        </tr>
+        {% endfor %}
+        <tr class="is-selected">
+
+          <td><fieldset class="boat">
+          {{ form.name.label }}
+          {{ form.name(placeholder='BoatyMcBoatFace') }}
+          {% if form.name.errors %}
+          <ul class="errors">
+            {% for error in form.email.errors %}
+              <li>{{ error }}</li>{% endfor %}
+          </ul>{% endif %}
+          </fieldset></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><div class="submit-button">{{ form.submit }}</div></td>
+        </tr>
+      </table>
+    </div>
+</div>
+
+{% endblock %}
