@@ -35,7 +35,7 @@ class BoatType(db.Model):
 class Boat(db.Model):
     __tablename__   = 'Boat'
     id              = db.Column(db.Integer, primary_key=True, unique=True)
-    name            = db.Column(db.Text, nullable=False, unique=True)
+    name            = db.Column(db.String(20), nullable=False, unique=True)
     desiredCourse   = db.Column(db.Float, nullable=False)
     started         = db.Column(db.Integer, nullable=False)
     isActive        = db.Column(db.Integer, nullable=False)
@@ -49,7 +49,7 @@ class Boat(db.Model):
 class Location(db.Model):
     __tablename__   = 'Location'
     id              = db.Column(db.Integer, primary_key=True)
-    name            = db.Column(db.String, nullable=False, unique=True)
+    name            = db.Column(db.String(20), nullable=False, unique=True)
     start_lat       = db.Column(db.Float, nullable=False)
     start_lon       = db.Column(db.Float, nullable=False)
     sw_corner_lat   = db.Column(db.Float, nullable=False)
@@ -63,7 +63,7 @@ class Location(db.Model):
 class BoatRace(db.Model):
     __tablename__   = 'BoatRace'
     id              = db.Column(db.Integer, primary_key=True)
-    name            = db.Column(db.String, nullable=False, unique=True)
+    name            = db.Column(db.String(20), nullable=False, unique=True)
     boat_type       = db.Column(db.Integer, nullable=False)
     start_time      = db.Column(db.Integer, nullable=False)
     private         = db.Column(db.Integer, nullable=False)
