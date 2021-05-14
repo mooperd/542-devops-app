@@ -1,13 +1,18 @@
 #!/bin/bash
 
-export NAMESPACE=andrew
-export SERVICE_NAME=andrews_app
+export NAMESPACE=$(git rev-parse --abbrev-ref HEAD)
+export SERVICE_NAME=andrews-app
 export SHORT_SHA=$(git rev-parse --short HEAD)
 export BUILD_IMAGE=gcr.io/devops-542/$SERVICE_NAME:$SHORT_SHA
+export HOSTNAME=$NAMESPACE.tld.com
+
+# Application secrets
+export SECRET_KEY=test1234
+export SQLALCHEMY_DATABASE_URI=mysql://root:password@mysql.database/$NAMESPACE-$SERVICE_NAME
 
 # Authenticate with google services
 gcloud container clusters get-credentials cluster-1 --zone europe-west1-b --project devops-542
-gcloud auth configure-docker
+gcloud auth configure-docker --quiet
 
 # Build and push the docker image      
 docker build -t $BUILD_IMAGE .
