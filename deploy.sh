@@ -1,14 +1,14 @@
 #!/bin/bash
 
 export NAMESPACE=$(git rev-parse --abbrev-ref HEAD)
-export SERVICE_NAME=andrews_app
+export SERVICE_NAME=andrews-app
 export SHORT_SHA=$(git rev-parse --short HEAD)
 export BUILD_IMAGE=gcr.io/devops-542/$SERVICE_NAME:$SHORT_SHA
 export HOSTNAME=$NAMESPACE.tld.com
 
 # Application secrets
 export SECRET_KEY=test1234
-export MYSQL_SCHEMA=$NAMESPACE_$SERVICE_NAME
+export MYSQL_SCHEMA=${NAMESPACE/-/_}_${SERVICE_NAME/-/_}
 export MYSQL_HOST=mysql.database
 export MYSQL_USER=root
 export MYSQL_PWD=password
