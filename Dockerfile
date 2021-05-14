@@ -9,4 +9,4 @@ COPY . /app
 
 EXPOSE 8080
 
-CMD start.sh
+CMD ./start.sh
