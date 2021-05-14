@@ -8,7 +8,11 @@ export HOSTNAME=$NAMESPACE.tld.com
 
 # Application secrets
 export SECRET_KEY=test1234
-export SQLALCHEMY_DATABASE_URI=mysql://root:password@mysql.database/$NAMESPACE-$SERVICE_NAME
+export MYSQL_SCHEMA=$NAMESPACE-$SERVICE_NAME
+export MYSQL_HOST=mysql.database
+export MYSQL_USER=root
+export MYSQL_PWD=password
+export SQLALCHEMY_DATABASE_URI=mysql+pymysql://$MYSQL_USER:$MYSQL_PWD@$MYSQL_HOST/$NAMESPACE-$SERVICE_NAME
 
 # Authenticate with google services
 gcloud container clusters get-credentials cluster-1 --zone europe-west1-b --project devops-542
