@@ -24,11 +24,18 @@ kubectl create namepace database
 kubectl apply -f k8s/deploy-database.yaml -n database
 ```
 
+We can check that our database has deployed properly with the following commands. -n is where we specify the namespace. -o specifies the type of output. We can choose from json, yaml. the default is a table. `-o wide` gives us an extended table output. 
+
+```
+kubectl get pod -n database -o wide
+kubectl get service -n database -o wide
+```
+
 # Application
 
 Our application is deployed as a container within a pod by a *Deployment*. The *Pod* is residing inside a *Namespace* along with the *Service* and *Ingress*.
 
-The *Deployment* provides two key bits of information: The image to be deployed and the number of replicas. Kubernetes will maintain the type and number of *Pods* described in the *Deployment* by `spec.replicas` and `spec.template.containers[].image.
+The *Deployment* provides two key bits of information: The image to be deployed and the number of replicas. Kubernetes will maintain the type and number of *Pods* described in the *Deployment* by `spec.replicas` and `spec.template.containers[].image`.
  
 ```
 apiVersion: apps/v1
@@ -65,5 +72,10 @@ spec:
 
 The *Pods* are ephemeral with temporary ip addresses so we should never try and connect to them directly. We use a *Service* as a discovery mechanism and load balancer. The *Service* discoveres all the pods produced by a deployment and load balances them.
 
-*Ingress* is mapping  
-# 
+
+*Ingress* is mapping a host header with a service. All the *Ingresses* in the system are collected up and injected into the nginx ingress controller as a bunch of vhost configurations. The ingress controller is the entry point for traffic into our cluster. It is deployed into the ingress-nginx namespace with a special LoadBalancer *Service*. This *Service* has some magic inside which deploys a Load Balancer with the cloud provider pointing to itself.      
+
+# Application Deployment
+
+The application can be deployed with `deploy.sh` - a script which runs through all the actions performed by the CI-CD system. In order to make it work properly we have to add a new commit to the repository each time we want to re-deploy. This is because we need to provide a different docker image name each time we want to update our application in Kubernetes. For example - if we deploy gcr.io/devops-542/andrews-app:04f50b6 in kubernetes - make some changes and then push the new docker image with the same tag - Kubernetes will not know to pull the new image from the repository. It will already have gcr.io/devops-542/andrews-app:04f50b6 cached. Redeploying our application with a new docker image tag will ensure that all pods are replaced. Take a look in the comments in `deploy.sh` for more information about its operation. 
+
