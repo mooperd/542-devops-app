@@ -43,25 +43,26 @@ gcloud auth configure-docker --quiet
 docker build -t $BUILD_IMAGE .
 docker push $BUILD_IMAGE
 
-# Deploy the application.
+## Deploy the application. The first command in each deployment spits the templated yaml out to stdout. 
+
 
 # First create the namespace
 cat k8s/namespace.yaml | envsubst
 cat k8s/namespace.yaml | envsubst | kubectl apply -f - 
 
-# Create the configmap
+# Create the configmap. This is where we are storing all our environment variables for our application.
 cat k8s/configmap.yaml | envsubst
 cat k8s/configmap.yaml | envsubst | kubectl apply -n $NAMESPACE -f - 
 
-# Create the deployment
+# Create the deployment. This is where we specify the container/pod we want to deploy and the number of replicas.
 cat k8s/deployment.yaml | envsubst
 cat k8s/deployment.yaml | envsubst | kubectl apply -n $NAMESPACE -f -
 
-# Create the service
+# Create the service. This is where we define the internal loadbalancing and service discovery.
 cat k8s/service.yaml | envsubst
 cat k8s/service.yaml | envsubst | kubectl apply -n $NAMESPACE -f -
 
-# Create the ingress 
+# Create the ingress. This is where we map a host header with a service for incoming traffic.
 cat k8s/ingress.yaml | envsubst
 cat k8s/ingress.yaml | envsubst | kubectl apply -n $NAMESPACE -f -
 

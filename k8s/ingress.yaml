@@ -1,3 +1,4 @@
+# The ingress is where we create a route for incoming traffic into the cluster. 
 # https://github.com/kubernetes/ingress-gce/blob/master/docs/annotations.md
 apiVersion: networking.k8s.io/v1
 kind: List
@@ -7,18 +8,18 @@ items:
   metadata:
     name: staging-ingress
     annotations:
-      kubernetes.io/ingress.class: "nginx"
+      kubernetes.io/ingress.class: "nginx" # So that the nginx ingress controller knows to pick up this ingress.
   spec:
     tls:
     - hosts:
-      - $HOSTNAME
-      secretName: $CERT_NAME
+      - $HOSTNAME # The ingress will match incoming traffic with a host header matching this value.
+      secretName: $CERT_NAME # The SSL certificate must be available in the same namespace as the
     rules:
-    - host: $HOSTNAME
+    - host: $HOSTNAME 
       http:
         paths:
         - backend:
-            serviceName: $SERVICE_NAME
+            serviceName: $SERVICE_NAME # Send traffic to this service 
             servicePort: 80
-          path: /
+          path: / 
 
