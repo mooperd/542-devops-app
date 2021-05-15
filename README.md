@@ -1,12 +1,22 @@
 # Sailnavsim web
 
+## Dependancies
+
+On Mac you will probably want to generally upgrade your user environment to make it a bit more linux like. Apple have really neglected their usespace tools. YMMV.  
+[Install GNU userland tools] (https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-xi/)
+[Upgrade bash] (https://itnext.io/upgrading-bash-on-macos-7138bd1066ba)
+
+[gcloud cli](https://cloud.google.com/sdk/gcloud) - You'll need to run `gcloud init` to authenticate yourself first.
+[envsubst](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html) - I *think* this is default on osx - otherwise provided by the GNU gettext package on all great distros.
+[docker desktop](https://www.docker.com/products/docker-desktop)
+
 ## Application Installation
 
 **Installation via `requirements.txt`**:
 
 ```shell
-$ git clone https://github.com/hackersandslackers/flasklogin-tutorial.git
-$ cd flasklogin-tutorial
+$ git clone git@github.com:mooperd/542-devops-app.git
+$ cd 542-devops-app
 $ python3 -m venv myenv
 $ source myenv/bin/activate
 $ pip3 install -r requirements.txt
