@@ -28,6 +28,7 @@ workspace:
       value:
         - name: "install curl"
           command: |
+            export DEBIAN_FRONTEND=noninteractive 
             apt-get update
             apt-get install -y curl git ssh
         - name: "Create organization directory"
