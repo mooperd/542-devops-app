@@ -32,11 +32,7 @@ workspace:
             apt-get update
             apt-get install -y curl git ssh
         - name: "Create organization directory"
-          command: "mkdir -p /home/coder/"
-          # Be careful with keyscans like this
-        - name: "Create organization directory"
-          command: "mkdir -p /home/coder/"
-          # Be careful with keyscans like this!
+          command: "mkdir -p ~/.ssh"
         - name: "Add GitHub to known hosts"
           command:
             "sudo ssh-keyscan -H github.com >> /home/coder/.ssh/known_hosts"
