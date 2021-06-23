@@ -28,13 +28,13 @@ workspace:
       value:
         - name: "install curl"
           command: |
-            apt update
-            apt install -y curl git ssh
+            apt-get update
+            apt-get install -y curl git ssh
         - name: "Create organization directory"
-          command: "mkdir -p /home/coder/go/src/github.com/my-org"
+          command: "mkdir -p /home/coder/"
           # Be careful with keyscans like this
         - name: "Create organization directory"
-          command: "mkdir -p /home/coder/go/src/github.com/my-org"
+          command: "mkdir -p /home/coder/"
           # Be careful with keyscans like this!
         - name: "Add GitHub to known hosts"
           command:
