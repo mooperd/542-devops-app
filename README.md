@@ -1,3 +1,6 @@
+[![Open in Coder](https://cdn.coder.com/embed-button.svg)](https://coder.542.ninja/wac/build?template_oauth_service=github&template_url=https://github.com/mooperd/542-devops-app&template_ref=master&template_filepath=.coder/coder.yaml)
+
+
 # Sailnavsim web
 
 ## Dependancies
